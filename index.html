@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GIPSA Premium Calculator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="container">
+    <div class="header">
+      <h1>GIPSA Staff GMC Premium Calculator</h1>
+      <div class="info-box">
+        <span class="icon">ℹ️</span>
+        <p>
+          Company contributes <b>75%</b> of the premium for <b>Employee, Spouse & up to 2 Dependent Children</b> (up to entitlement).
+          If a higher SI is chosen, the <b>difference is fully paid by you</b>. Parents, In‑laws & Independent Children are <b>self‑paid</b>.
+          Eligible slabs are ₹8L, ₹10L, ₹15L (entitlement), but you may choose higher SIs up to ₹50L.
+        </p>
+      </div>
+    </div>
+
+    <div class="content-grid">
+      <section class="card inputs" aria-label="Inputs">
+        <h2>Inputs</h2>
+        
+        <div class="form-group">
+          <div class="field">
+            <label for="payBand">Basic Pay Band</label>
+            <select id="payBand">
+              <option value="8">&lt; ₹67,265 (Entitlement: ₹8L)</option>
+              <option value="10">₹67,265 – ₹85,925 (Entitlement: ₹10L)</option>
+              <option value="15">&gt; ₹85,925 (Entitlement: ₹15L)</option>
+            </select>
+          </div>
+          <div id="entitlementBox" class="pill">Entitlement: ₹8L</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h3>Employer‑Subsidized Members</h3>
+        <div class="member-grid">
+          <div class="member-card">
+            <label class="checkbox-label"><input type="checkbox" id="empOn" checked> Employee</label>
+            <div class="select-group">
+              <div class="field">
+                <label for="empAge">Age Band</label>
+                <select id="empAge"></select>
+              </div>
+              <div class="field">
+                <label for="empSI">Sum Insured</label>
+                <select id="empSI"></select>
+              </div>
+            </div>
+          </div>
+          <div class="member-card">
+            <label class="checkbox-label"><input type="checkbox" id="spouseOn"> Spouse</label>
+            <div class="select-group">
+              <div class="field">
+                <label for="spouseAge">Age Band</label>
+                <select id="spouseAge"></select>
+              </div>
+              <div class="field">
+                <label for="spouseSI">Sum Insured</label>
+                <select id="spouseSI"></select>
+              </div>
+            </div>
+          </div>
+          <div class="member-card">
+            <label class="checkbox-label"><input type="checkbox" id="child1On"> Dependent Child 1</label>
+            <div class="select-group">
+              <div class="field">
+                <label for="child1Age">Age Band</label>
+                <select id="child1Age"></select>
+              </div>
+              <div class="field">
+                <label for="child1SI">Sum Insured</label>
+                <select id="child1SI"></select>
+              </div>
+            </div>
+          </div>
+          <div class="member-card">
+            <label class="checkbox-label"><input type="checkbox" id="child2On"> Dependent Child 2</label>
+            <div class="select-group">
+              <div class="field">
+                <label for="child2Age">Age Band</label>
+                <select id="child2Age"></select>
+              </div>
+              <div class="field">
+                <label for="child2SI">Sum Insured</label>
+                <select id="child2SI"></select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h3>Self‑Paid Members</h3>
+        <div class="member-grid">
+          <div class="member-card">
+            <label class="checkbox-label"><input type="checkbox" id="parent1On"> Parent 1</label>
+            <div class="select-group">
+              <div class="field">
+                <label for="parent1Age">Age Band</label>
+                <select id="parent1Age"></select>
+              </div>
+              <div class="field">
+                <label for="parent1SI">Sum Insured</label>
+                <select id="parent1SI"></select>
+              </div>
+            </div>
+          </div>
+          <div class="member-card">
+            <label class="checkbox-label"><input type="checkbox" id="parent2On"> Parent 2</label>
+            <div class="select-group">
+              <div class="field">
+                <label for="parent2Age">Age Band</label>
+                <select id="parent2Age"></select>
+              </div>
+              <div class="field">
+                <label for="parent2SI">Sum Insured</label>
+                <select id="parent2SI"></select>
+              </div>
+            </div>
+          </div>
+          <div class="member-card">
+            <label class="checkbox-label"><input type="checkbox" id="parentInLaw1On"> Parent‑in‑law 1</label>
+            <div class="select-group">
+              <div class="field">
+                <label for="parentInLaw1Age">Age Band</label>
+                <select id="parentInLaw1Age"></select>
+              </div>
+              <div class="field">
+                <label for="parentInLaw1SI">Sum Insured</label>
+                <select id="parentInLaw1SI"></select>
+              </div>
+            </div>
+          </div>
+           <div class="member-card">
+            <label class="checkbox-label"><input type="checkbox" id="parentInLaw2On"> Parent‑in‑law 2</label>
+            <div class="select-group">
+              <div class="field">
+                <label for="parentInLaw2Age">Age Band</label>
+                <select id="parentInLaw2Age"></select>
+              </div>
+              <div class="field">
+                <label for="parentInLaw2SI">Sum Insured</label>
+                <select id="parentInLaw2SI"></select>
+              </div>
+            </div>
+          </div>
+          <div class="member-card">
+            <label class="checkbox-label"><input type="checkbox" id="indChild1On"> Independent Child 1</label>
+            <div class="select-group">
+              <div class="field">
+                <label for="indChild1Age">Age Band</label>
+                <select id="indChild1Age"></select>
+              </div>
+              <div class="field">
+                <label for="indChild1SI">Sum Insured</label>
+                <select id="indChild1SI"></select>
+              </div>
+            </div>
+          </div>
+          <div class="member-card">
+            <label class="checkbox-label"><input type="checkbox" id="indChild2On"> Independent Child 2</label>
+            <div class="select-group">
+              <div class="field">
+                <label for="indChild2Age">Age Band</label>
+                <select id="indChild2Age"></select>
+              </div>
+              <div class="field">
+                <label for="indChild2SI">Sum Insured</label>
+                <select id="indChild2SI"></select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <div class="field">
+            <label for="gstPct">GST %</label>
+            <input id="gstPct" type="number" value="18" min="0" step="1" />
+          </div>
+          <div class="button-group">
+            <button class="btn primary" id="calcBtn">Calculate</button>
+            <button class="btn" id="resetBtn">Reset</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card results" aria-label="Results">
+        <h2>Results</h2>
+        <div class="responsive-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Person</th>
+                <th>Base Premium</th>
+                <th>Employer Share</th>
+                <th>Employee Share</th>
+                <th>GST</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody id="resultsBody">
+              <tr><td colspan="6" class="muted">Select members and click <b>Calculate</b>.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="results-summary">
+          <div class="summary-box" id="monthlySubsidized">Monthly (Employee share for subsidized members): —</div>
+          <div class="summary-box" id="monthlyGrand">Monthly (Total incl. GST): —</div>
+        </div>
+      </section>
+    </div>
+    
+    <footer class="footer">
+      Created by <b>Bachu Anvesh</b> (SR NO. 42244) — <b>NIACL</b>
+    </footer>
+  </main>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
