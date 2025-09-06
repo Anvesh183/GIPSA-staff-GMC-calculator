@@ -6,12 +6,11 @@
   <title>GIPSA Premium Calculator</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="manifest" href="/manifest.json">
-  <link rel="icon" href="/favicon.ico" sizes="any">
 </head>
 <body>
   <main class="container">
     <div class="header">
-      <h1>GIPSA Staff GMC Premium Calculator</h1>
+      <h1>GIPSA Premium Calculator</h1>
       <div class="info-box">
         <span class="icon">ℹ️</span>
         <p>
@@ -23,6 +22,7 @@
     </div>
 
     <div class="content-grid">
+      <!-- Left: Inputs -->
       <section class="card inputs" aria-label="Inputs">
         <h2>Inputs</h2>
         
@@ -192,6 +192,7 @@
         </div>
       </section>
 
+      <!-- Right: Results -->
       <section class="card results" aria-label="Results">
         <h2>Results</h2>
         <div class="responsive-table">
@@ -221,10 +222,19 @@
     <footer class="footer">
       Created by <b>Bachu Anvesh</b> (SR NO. 42244) — <b>NIACL</b>
     </footer>
-  </main>
 
+    <!-- PWA Install Prompt -->
+    <div id="install-prompt-banner" class="install-banner hidden">
+      <p>Install this app for quick access on your home screen.</p>
+      <button id="install-btn">Install</button>
+    </div>
+
+  </main>
+  
   <script src="data.js"></script>
   <script src="app.js"></script>
+
+  <!-- Service Worker Registration -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
@@ -238,11 +248,5 @@
       });
     }
   </script>
-
-  <!-- PWA Install Prompt -->
-  <div id="install-prompt-banner" class="install-banner hidden">
-    <p>Install this app for quick access on your home screen.</p>
-    <button id="install-btn">Install</button>
-  </div>
 </body>
 </html>
