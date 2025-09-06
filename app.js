@@ -15,42 +15,11 @@ function fillSI(el){ el.innerHTML = SI_SLABS.map(v=>`<option value="${v}">${v} L
 
 // PWA Install Prompt Logic
 let deferredPrompt;
-const installBanner = document.getElementById('install-prompt-banner');
-const installBtn = document.getElementById('install-btn');
 
 // Capture the deferred prompt event. We only need to store the event.
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
-});
-
-// Show the install prompt banner on page load if the app is not in standalone mode.
-function showInstallPrompt() {
-  if (window.matchMedia('(display-mode: standalone)').matches) {
-    // App is already installed, do not show the prompt.
-    console.log('App is already in standalone mode. Hiding install prompt.');
-  } else {
-    // Show the custom install banner immediately.
-    installBanner.classList.add('active');
-  }
-}
-
-// When the install button is clicked, trigger the native browser prompt.
-installBtn.addEventListener('click', () => {
-  if (deferredPrompt) {
-    // Hide our custom banner.
-    installBanner.classList.remove('active');
-    // Show the native browser install prompt.
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then((choiceResult) => {
-      if (choiceResult.outcome === 'accepted') {
-        console.log('User accepted the install prompt');
-      } else {
-        console.log('User dismissed the install prompt');
-      }
-      deferredPrompt = null;
-    });
-  }
 });
 
 function initControls(){
@@ -204,7 +173,34 @@ function init(){
   document.getElementById('calcBtn').addEventListener('click', calculate);
   document.getElementById('resetBtn').addEventListener('click', resetAll);
   
-  // Show the install banner on page load.
-  showInstallPrompt();
+  // PWA Install Prompt Logic (Correctly Placed Inside init function)
+  const installBanner = document.getElementById('install-prompt-banner');
+  const installBtn = document.getElementById('install-btn');
+
+  // Show the install prompt banner on page load if the app is not in standalone mode.
+  if (installBanner && installBtn && !window.matchMedia('(display-mode: standalone)').matches) {
+    installBanner.classList.add('active');
+  }
+
+  // When the install button is clicked, trigger the native browser prompt.
+  if (installBtn) {
+    installBtn.addEventListener('click', () => {
+      if (deferredPrompt) {
+        // Hide our custom banner.
+        installBanner.classList.remove('active');
+        // Show the native browser install prompt.
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('User accepted the install prompt');
+          } else {
+            console.log('User dismissed the install prompt');
+          }
+          deferredPrompt = null;
+        });
+      }
+    });
+  }
 }
+
 document.addEventListener('DOMContentLoaded', init);
