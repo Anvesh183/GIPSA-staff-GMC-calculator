@@ -337,3 +337,41 @@ thead th {
   color: var(--text-muted);
   font-size: 0.75rem;
 }
+
+.install-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: var(--card-bg);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  z-index: 1000;
+  transition: transform 0.3s ease-in-out;
+  transform: translateY(100%);
+}
+
+.install-banner.active {
+  transform: translateY(0);
+}
+
+.install-banner p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-dark);
+}
+
+.install-banner #install-btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}

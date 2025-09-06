@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>GIPSA Premium Calculator</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/favicon.ico" sizes="any">
 </head>
 <body>
   <main class="container">
@@ -223,5 +225,24 @@
 
   <script src="data.js"></script>
   <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(registration => {
+            console.log('Service Worker registered! Scope:', registration.scope);
+          })
+          .catch(err => {
+            console.log('Service Worker registration failed:', err);
+          });
+      });
+    }
+  </script>
+
+  <!-- PWA Install Prompt -->
+  <div id="install-prompt-banner" class="install-banner hidden">
+    <p>Install this app for quick access on your home screen.</p>
+    <button id="install-btn">Install</button>
+  </div>
 </body>
 </html>

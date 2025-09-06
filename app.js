@@ -1,3 +1,5 @@
+/* Production calculator logic (dropdown pay band entitlement, all slabs) */
+
 const SI_SLABS = [8,10,12,15,20,25,30,35,40,50];
 
 // Get age band lists per category
@@ -10,6 +12,45 @@ const AGE_IND = Object.keys(PREMIUMS.indChildren);
 function inr(n){ try{return new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',minimumFractionDigits:0}).format(n);}catch(e){return '₹'+Number(n).toFixed(0);} }
 function fillSelect(el, arr){ el.innerHTML = arr.map(v=>`<option value="${v}">${v}</option>`).join(''); }
 function fillSI(el){ el.innerHTML = SI_SLABS.map(v=>`<option value="${v}">${v} L</option>`).join(''); }
+
+// PWA Install Prompt Logic
+let deferredPrompt;
+const installBanner = document.getElementById('install-prompt-banner');
+const installBtn = document.getElementById('install-btn');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  // Prevent the mini-infobar from appearing on mobile
+  e.preventDefault();
+  // Stash the event so it can be triggered later
+  deferredPrompt = e;
+  // Check if the app is already installed
+  if (window.matchMedia('(display-mode: standalone)').matches) {
+    // App is already installed, do not show the prompt
+    console.log('App is already in standalone mode. Hiding install prompt.');
+    installBanner.classList.remove('active');
+  } else {
+    // Show the custom install banner
+    installBanner.classList.add('active');
+  }
+});
+
+installBtn.addEventListener('click', () => {
+  // Hide the banner
+  installBanner.classList.remove('active');
+  // Show the install prompt
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted the install prompt');
+      } else {
+        console.log('User dismissed the install prompt');
+      }
+      deferredPrompt = null;
+    });
+  }
+});
+
 
 function initControls(){
   // Age bands
