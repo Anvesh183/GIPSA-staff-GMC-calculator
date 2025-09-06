@@ -18,27 +18,29 @@ let deferredPrompt;
 const installBanner = document.getElementById('install-prompt-banner');
 const installBtn = document.getElementById('install-btn');
 
+// Capture the deferred prompt event. We only need to store the event.
 window.addEventListener('beforeinstallprompt', (e) => {
-  // Prevent the mini-infobar from appearing on mobile
   e.preventDefault();
-  // Stash the event so it can be triggered later
   deferredPrompt = e;
-  // Check if the app is already installed
-  if (window.matchMedia('(display-mode: standalone)').matches) {
-    // App is already installed, do not show the prompt
-    console.log('App is already in standalone mode. Hiding install prompt.');
-    installBanner.classList.remove('active');
-  } else {
-    // Show the custom install banner
-    installBanner.classList.add('active');
-  }
 });
 
+// Show the install prompt banner on page load if the app is not in standalone mode.
+function showInstallPrompt() {
+  if (window.matchMedia('(display-mode: standalone)').matches) {
+    // App is already installed, do not show the prompt.
+    console.log('App is already in standalone mode. Hiding install prompt.');
+  } else {
+    // Show the custom install banner immediately.
+    installBanner.classList.add('active');
+  }
+}
+
+// When the install button is clicked, trigger the native browser prompt.
 installBtn.addEventListener('click', () => {
-  // Hide the banner
-  installBanner.classList.remove('active');
-  // Show the install prompt
   if (deferredPrompt) {
+    // Hide our custom banner.
+    installBanner.classList.remove('active');
+    // Show the native browser install prompt.
     deferredPrompt.prompt();
     deferredPrompt.userChoice.then((choiceResult) => {
       if (choiceResult.outcome === 'accepted') {
@@ -50,7 +52,6 @@ installBtn.addEventListener('click', () => {
     });
   }
 });
-
 
 function initControls(){
   // Age bands
@@ -202,5 +203,8 @@ function init(){
   initControls();
   document.getElementById('calcBtn').addEventListener('click', calculate);
   document.getElementById('resetBtn').addEventListener('click', resetAll);
+  
+  // Show the install banner on page load.
+  showInstallPrompt();
 }
 document.addEventListener('DOMContentLoaded', init);
