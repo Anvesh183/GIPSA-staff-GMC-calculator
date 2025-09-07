@@ -347,11 +347,16 @@ thead th {
   color: var(--text-muted);
 }
 
-.footer {
+.byline {
   text-align: center;
-  margin: 2rem 0 1rem;
+  font-size: 0.875rem; /* 14px */
   color: var(--text-muted);
-  font-size: 0.75rem;
+  margin-top: -0.5rem; /* Tucks it up nicely under the main title */
+  margin-bottom: 1.5rem;
+}
+
+.byline b {
+  color: var(--text-dark); /* Makes the bolded name stand out a bit more */
 }
 
 .install-banner {
