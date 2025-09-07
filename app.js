@@ -99,28 +99,104 @@ function computeSelfPaid(category, ageBand, chosenSI, gstPct){
   return { base, employerShare, employeeShare, gst, total: employeeShare + gst };
 }
 
-function calculate(){
-  const entitlementSI = Number(document.getElementById('payBand').value);
-  const gstPct = Number(document.getElementById('gstPct').value);
-  const resultsBody = document.getElementById('resultsBody');
-  resultsBody.innerHTML = '';
+// function calculate(){
+//   const entitlementSI = Number(document.getElementById('payBand').value);
+//   const gstPct = Number(document.getElementById('gstPct').value);
+//   const resultsBody = document.getElementById('resultsBody');
+//   resultsBody.innerHTML = '';
+
+//   const rows = [];
+//   let monthlySubsidized = 0, monthlyGrand = 0;
+
+//   function addPersonRow(label, onId, ageId, siId, category, subsidized){
+//     if(!document.getElementById(onId).checked) return;
+//     const age = document.getElementById(ageId).value;
+//     const si = Number(document.getElementById(siId).value);
+//     const res = subsidized
+//       ? computeSubsidized(category, age, si, entitlementSI, gstPct)
+//       : computeSelfPaid(category, age, si, gstPct);
+//     if(res.error){
+//       rows.push(`<tr><td colspan="6" style="color:#b91c1c">${res.error}</td></tr>`);
+//       return;
+//     }
+//     if(subsidized){ monthlySubsidized += res.total/12; }
+//     monthlyGrand += res.total/12;
+//     rows.push(`<tr>
+//       <td data-label="Person">${label}</td>
+//       <td data-label="Base Premium">${inr(res.base)}</td>
+//       <td data-label="Employer Share">${inr(res.employerShare)}</td>
+//       <td data-label="Employee Share">${inr(res.employeeShare)}</td>
+//       <td data-label="GST">${inr(res.gst)}</td>
+//       <td data-label="Total"><b>${inr(res.total)}</b></td>
+//     </tr>`);
+//   }
+
+//   // Employer-subsidized
+//   addPersonRow('Employee','empOn','empAge','empSI','employee',true);
+//   addPersonRow('Spouse','spouseOn','spouseAge','spouseSI','spouse',true);
+//   addPersonRow('Dependent Child 1','child1On','child1Age','child1SI','family',true);
+//   addPersonRow('Dependent Child 2','child2On','child2Age','child2SI','family',true);
+//   // Self-paid
+//   addPersonRow('Parent 1','parent1On','parent1Age','parent1SI','parents',false);
+//   addPersonRow('Parent 2','parent2On','parent2Age','parent2SI','parents',false);
+//   addPersonRow('Parent-in-law 1','parentInLaw1On','parentInLaw1Age','parentInLaw1SI','parents',false);
+//   addPersonRow('Parent-in-law 2','parentInLaw2On','parentInLaw2Age','parentInLaw2SI','parents',false);
+//   addPersonRow('Independent Child 1','indChild1On','indChild1Age','indChild1SI','indChildren',false);
+//   addPersonRow('Independent Child 2','indChild2On','indChild2Age','indChild2SI','indChildren',false);
+
+//   if(rows.length===0){
+//     resultsBody.innerHTML = '<tr><td colspan="6" class="muted">Select members and click <b>Calculate</b>.</td></tr>';
+//   }else{
+//     resultsBody.innerHTML = rows.join('');
+//   }
+
+//   document.getElementById('monthlySubsidized').textContent = 'Monthly (Employee share for subsidized members): ' + inr(Math.round(monthlySubsidized*100)/100);
+//   document.getElementById('monthlyGrand').textContent = 'Monthly (Total incl. GST): ' + inr(Math.round(monthlyGrand*100)/100);
+// }
+
+// function resetAll(){
+//   document.getElementById('payBand').value = '8';
+//   document.getElementById('gstPct').value = '18';
+//   // defaults for checkboxes
+//   ['empOn','spouseOn','child1On','child2On','parent1On','parent2On','parentInLaw1On','parentInLaw2On','indChild1On','indChild2On'].forEach((id)=>{
+//     document.getElementById(id).checked = (id==='empOn');
+//   });
+//   // refill selects
+//   initControls();
+//   document.getElementById('resultsBody').innerHTML = '<tr><td colspan="6" class="muted">Select members and click <b>Calculate</b>.</td></tr>';
+//   document.getElementById('monthlySubsidized').textContent = 'Monthly (Employee share for subsidized members): —';
+//   document.getElementById('monthlyGrand').textContent = 'Monthly (Total incl. GST): —';
+// }
+
+// In app.js
+
+function calculate() {
+  const entitlementSI = Number(document.getElementById("payBand").value);
+  const gstPct = Number(document.getElementById("gstPct").value);
+  const resultsBody = document.getElementById("resultsBody");
+  resultsBody.innerHTML = "";
 
   const rows = [];
-  let monthlySubsidized = 0, monthlyGrand = 0;
+  let monthlySubsidized = 0,
+    monthlyGrand = 0;
 
-  function addPersonRow(label, onId, ageId, siId, category, subsidized){
-    if(!document.getElementById(onId).checked) return;
+  function addPersonRow(label, onId, ageId, siId, category, subsidized) {
+    if (!document.getElementById(onId).checked) return;
     const age = document.getElementById(ageId).value;
     const si = Number(document.getElementById(siId).value);
     const res = subsidized
       ? computeSubsidized(category, age, si, entitlementSI, gstPct)
       : computeSelfPaid(category, age, si, gstPct);
-    if(res.error){
-      rows.push(`<tr><td colspan="6" style="color:#b91c1c">${res.error}</td></tr>`);
+    if (res.error) {
+      rows.push(
+        `<tr><td colspan="6" style="color:#b91c1c">${res.error}</td></tr>`
+      );
       return;
     }
-    if(subsidized){ monthlySubsidized += res.total/12; }
-    monthlyGrand += res.total/12;
+    if (subsidized) {
+      monthlySubsidized += res.total / 12;
+    }
+    monthlyGrand += res.total / 12;
     rows.push(`<tr>
       <td data-label="Person">${label}</td>
       <td data-label="Base Premium">${inr(res.base)}</td>
@@ -132,40 +208,124 @@ function calculate(){
   }
 
   // Employer-subsidized
-  addPersonRow('Employee','empOn','empAge','empSI','employee',true);
-  addPersonRow('Spouse','spouseOn','spouseAge','spouseSI','spouse',true);
-  addPersonRow('Dependent Child 1','child1On','child1Age','child1SI','family',true);
-  addPersonRow('Dependent Child 2','child2On','child2Age','child2SI','family',true);
+  addPersonRow("Employee", "empOn", "empAge", "empSI", "employee", true);
+  addPersonRow("Spouse", "spouseOn", "spouseAge", "spouseSI", "spouse", true);
+  addPersonRow(
+    "Dependent Child 1",
+    "child1On",
+    "child1Age",
+    "child1SI",
+    "family",
+    true
+  );
+  addPersonRow(
+    "Dependent Child 2",
+    "child2On",
+    "child2Age",
+    "child2SI",
+    "family",
+    true
+  );
   // Self-paid
-  addPersonRow('Parent 1','parent1On','parent1Age','parent1SI','parents',false);
-  addPersonRow('Parent 2','parent2On','parent2Age','parent2SI','parents',false);
-  addPersonRow('Parent-in-law 1','parentInLaw1On','parentInLaw1Age','parentInLaw1SI','parents',false);
-  addPersonRow('Parent-in-law 2','parentInLaw2On','parentInLaw2Age','parentInLaw2SI','parents',false);
-  addPersonRow('Independent Child 1','indChild1On','indChild1Age','indChild1SI','indChildren',false);
-  addPersonRow('Independent Child 2','indChild2On','indChild2Age','indChild2SI','indChildren',false);
+  addPersonRow(
+    "Parent 1",
+    "parent1On",
+    "parent1Age",
+    "parent1SI",
+    "parents",
+    false
+  );
+  addPersonRow(
+    "Parent 2",
+    "parent2On",
+    "parent2Age",
+    "parent2SI",
+    "parents",
+    false
+  );
+  addPersonRow(
+    "Parent-in-law 1",
+    "parentInLaw1On",
+    "parentInLaw1Age",
+    "parentInLaw1SI",
+    "parents",
+    false
+  );
+  addPersonRow(
+    "Parent-in-law 2",
+    "parentInLaw2On",
+    "parentInLaw2Age",
+    "parentInLaw2SI",
+    "parents",
+    false
+  );
+  addPersonRow(
+    "Independent Child 1",
+    "indChild1On",
+    "indChild1Age",
+    "indChild1SI",
+    "indChildren",
+    false
+  );
+  addPersonRow(
+    "Independent Child 2",
+    "indChild2On",
+    "indChild2Age",
+    "indChild2SI",
+    "indChildren",
+    false
+  );
 
-  if(rows.length===0){
-    resultsBody.innerHTML = '<tr><td colspan="6" class="muted">Select members and click <b>Calculate</b>.</td></tr>';
-  }else{
-    resultsBody.innerHTML = rows.join('');
+  if (rows.length === 0) {
+    resultsBody.innerHTML =
+      '<tr><td colspan="6" class="muted">Select members and click <b>Calculate</b>.</td></tr>';
+  } else {
+    resultsBody.innerHTML = rows.join("");
   }
 
-  document.getElementById('monthlySubsidized').textContent = 'Monthly (Employee share for subsidized members): ' + inr(Math.round(monthlySubsidized*100)/100);
-  document.getElementById('monthlyGrand').textContent = 'Monthly (Total incl. GST): ' + inr(Math.round(monthlyGrand*100)/100);
+  document.getElementById("monthlySubsidized").textContent =
+    "Monthly (Employee share for subsidized members): " +
+    inr(Math.round(monthlySubsidized * 100) / 100);
+  document.getElementById("monthlyGrand").textContent =
+    "Monthly (Total incl. GST): " + inr(Math.round(monthlyGrand * 100) / 100);
+
+  // Show results and scroll to them
+  const resultsSection = document.querySelector(".results");
+  resultsSection.classList.add("show");
+  resultsSection.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-function resetAll(){
-  document.getElementById('payBand').value = '8';
-  document.getElementById('gstPct').value = '18';
+function resetAll() {
+  document.getElementById("payBand").value = "8";
+  document.getElementById("gstPct").value = "18";
   // defaults for checkboxes
-  ['empOn','spouseOn','child1On','child2On','parent1On','parent2On','parentInLaw1On','parentInLaw2On','indChild1On','indChild2On'].forEach((id)=>{
-    document.getElementById(id).checked = (id==='empOn');
+  [
+    "empOn",
+    "spouseOn",
+    "child1On",
+    "child2On",
+    "parent1On",
+    "parent2On",
+    "parentInLaw1On",
+    "parentInLaw2On",
+    "indChild1On",
+    "indChild2On",
+  ].forEach((id) => {
+    document.getElementById(id).checked = id === "empOn";
   });
   // refill selects
   initControls();
-  document.getElementById('resultsBody').innerHTML = '<tr><td colspan="6" class="muted">Select members and click <b>Calculate</b>.</td></tr>';
-  document.getElementById('monthlySubsidized').textContent = 'Monthly (Employee share for subsidized members): —';
-  document.getElementById('monthlyGrand').textContent = 'Monthly (Total incl. GST): —';
+  document.getElementById("resultsBody").innerHTML =
+    '<tr><td colspan="6" class="muted">Select members and click <b>Calculate</b>.</td></tr>';
+  document.getElementById("monthlySubsidized").textContent =
+    "Monthly (Employee share for subsidized members): —";
+  document.getElementById("monthlyGrand").textContent =
+    "Monthly (Total incl. GST): —";
+
+  // Hide results and scroll to top
+  const resultsSection = document.querySelector(".results");
+  resultsSection.classList.remove("show");
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function init(){
@@ -173,22 +333,20 @@ function init(){
   document.getElementById('calcBtn').addEventListener('click', calculate);
   document.getElementById('resetBtn').addEventListener('click', resetAll);
   
-  // PWA Install Prompt Logic (Correctly Placed Inside init function)
+  // PWA Install Prompt Logic
   const installBanner = document.getElementById('install-prompt-banner');
   const installBtn = document.getElementById('install-btn');
+  // GET THE NEW CLOSE BUTTON ELEMENT
+  const closeInstallBtn = document.getElementById('close-install-btn');
 
-  // Show the install prompt banner on page load if the app is not in standalone mode.
-  if (installBanner && installBtn && !window.matchMedia('(display-mode: standalone)').matches) {
+  if (installBanner && !window.matchMedia('(display-mode: standalone)').matches) {
     installBanner.classList.add('active');
   }
 
-  // When the install button is clicked, trigger the native browser prompt.
   if (installBtn) {
     installBtn.addEventListener('click', () => {
       if (deferredPrompt) {
-        // Hide our custom banner.
         installBanner.classList.remove('active');
-        // Show the native browser install prompt.
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then((choiceResult) => {
           if (choiceResult.outcome === 'accepted') {
@@ -199,6 +357,13 @@ function init(){
           deferredPrompt = null;
         });
       }
+    });
+  }
+
+  // ADD THIS EVENT LISTENER FOR THE CLOSE BUTTON
+  if (closeInstallBtn) {
+    closeInstallBtn.addEventListener('click', () => {
+      installBanner.classList.remove('active');
     });
   }
 }
